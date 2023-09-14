@@ -1,0 +1,18 @@
+ipAddr: 127.0.0.1
+server:
+  port: 12000
+spring:
+  application:
+    name: gulimall-file
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      username: nacos
+      password: nacos
+
+qiniu:
+  accessKey: aFzqEf-D_A8iJo9Ku5wf89G7v_hEYng_Lw2OlQQP
+  secretKey: c_mCsJk8C00ng7zPUKr7Ji22YV3Hcdxk3a4my3CP
+  bucketName: xianyungarden
+  domainName: https://qiniu.yiqu.love/
