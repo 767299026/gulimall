@@ -2,9 +2,13 @@ package com.lsl.gulimall.product.controller;
 
 import com.lsl.common.utils.PageUtils;
 import com.lsl.common.utils.R;
+import com.lsl.common.valid.AddGroup;
+import com.lsl.common.valid.UpdateGroup;
+import com.lsl.common.valid.UpdateStatusGroup;
 import com.lsl.gulimall.product.entity.BrandEntity;
 import com.lsl.gulimall.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -52,9 +56,8 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@RequestBody BrandEntity brand) {
+    public R save(@Validated(AddGroup.class) @RequestBody BrandEntity brand) {
         brandService.save(brand);
-
         return R.ok();
     }
 
@@ -63,7 +66,18 @@ public class BrandController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand) {
+    public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand) {
+        brandService.updateById(brand);
+
+        return R.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/update/status")
+    //@RequiresPermissions("product:brand:update")
+    public R updateStatus(@Validated(UpdateStatusGroup.class) @RequestBody BrandEntity brand) {
         brandService.updateById(brand);
 
         return R.ok();

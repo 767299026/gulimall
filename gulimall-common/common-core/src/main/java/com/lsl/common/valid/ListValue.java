@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface ListValue {
     // 1 使用该属性去Validation.properties中取
-    String message() default "{com.atguigu.common.valid.ListValue.message}";
+    String message() default "{com.lsl.common.valid.ListValue.message}";
 
     // 2
     Class<?>[] groups() default {};

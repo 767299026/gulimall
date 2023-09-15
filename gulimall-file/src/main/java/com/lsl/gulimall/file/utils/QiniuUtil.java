@@ -28,9 +28,6 @@ public class QiniuUtil {
     // 域名
     private String domainName;
 
-    // 密钥配置
-    Auth auth = Auth.create(accessKey, secretKey);
-
     /**
      * 处理多文件
      * @param multipartFiles
@@ -53,6 +50,8 @@ public class QiniuUtil {
      */
     private String uploadImageQiniu(MultipartFile multipartFile){
         try {
+            // 密钥配置
+            Auth auth = Auth.create(accessKey, secretKey);
 //1、获取文件上传的流
             byte[] fileBytes = multipartFile.getBytes();
 
