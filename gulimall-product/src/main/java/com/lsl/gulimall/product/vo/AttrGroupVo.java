@@ -1,28 +1,19 @@
-package com.lsl.gulimall.product.entity;
+package com.lsl.gulimall.product.vo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * 属性分组
- *
- * @author YIQU
- * @email YIQU@gmail.com
- * @date 2023-08-01 17:39:46
+ * 属性分组Vo
  */
 @Data
-@TableName("pms_attr_group")
-public class AttrGroupEntity implements Serializable {
+public class AttrGroupVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * 分组id
      */
-    @TableId
     private Long attrGroupId;
     /**
      * 组名
@@ -44,8 +35,9 @@ public class AttrGroupEntity implements Serializable {
      * 所属分类id
      */
     private Long catelogId;
-
-    @TableField(exist = false)
+    /**
+     * 完整分类路径
+     */
     private Long[] catelogPath;
 
 }

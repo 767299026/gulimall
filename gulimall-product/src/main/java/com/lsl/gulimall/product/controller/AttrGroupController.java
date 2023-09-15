@@ -4,6 +4,7 @@ import com.lsl.common.utils.PageUtils;
 import com.lsl.common.utils.R;
 import com.lsl.gulimall.product.entity.AttrGroupEntity;
 import com.lsl.gulimall.product.service.AttrGroupService;
+import com.lsl.gulimall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,17 +22,20 @@ import java.util.Map;
 @RestController
 @RequestMapping("product/attrgroup")
 public class AttrGroupController {
+
     @Autowired
     private AttrGroupService attrGroupService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     /**
      * 列表
      */
-    @RequestMapping("/list/{catelogId}")
+    @GetMapping("/list/{catelogId}")
     //@RequiresPermissions("product:attrgroup:list")
     public R list(@PathVariable("catelogId") Long catelogId, @RequestParam Map<String, Object> params) {
         PageUtils page = attrGroupService.queryPage(catelogId,params);
-
         return R.ok().put("page", page);
     }
 
@@ -39,18 +43,20 @@ public class AttrGroupController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{attrGroupId}")
+    @GetMapping("/info/{attrGroupId}")
     //@RequiresPermissions("product:attrgroup:info")
     public R info(@PathVariable("attrGroupId") Long attrGroupId) {
         AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
-
+        Long catelogId = attrGroup.getCatelogId();
+        Long[] path = categoryService.findCatelogPath(catelogId);
+        attrGroup.setCatelogPath(path);
         return R.ok().put("attrGroup", attrGroup);
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     //@RequiresPermissions("product:attrgroup:save")
     public R save(@RequestBody AttrGroupEntity attrGroup) {
         attrGroupService.save(attrGroup);
@@ -61,7 +67,7 @@ public class AttrGroupController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     //@RequiresPermissions("product:attrgroup:update")
     public R update(@RequestBody AttrGroupEntity attrGroup) {
         attrGroupService.updateById(attrGroup);
@@ -72,7 +78,7 @@ public class AttrGroupController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @DeleteMapping("/delete")
     //@RequiresPermissions("product:attrgroup:delete")
     public R delete(@RequestBody Long[] attrGroupIds) {
         attrGroupService.removeByIds(Arrays.asList(attrGroupIds));

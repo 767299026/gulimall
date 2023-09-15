@@ -1,9 +1,6 @@
-package com.lsl.gulimall.product.entity;
+package com.lsl.gulimall.product.vo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -11,15 +8,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 商品三级分类
- *
- * @author YIQU
- * @email YIQU@gmail.com
- * @date 2023-08-01 17:39:47
+ * 商品三级分类Vo
  */
 @Data
-@TableName("pms_category")
-public class CategoryEntity implements Serializable {
+public class CategoryVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -42,7 +34,6 @@ public class CategoryEntity implements Serializable {
     /**
      * 是否显示[0-不显示，1显示]
      */
-    @TableLogic(value = "1", delval = "0")
     private Integer showStatus;
     /**
      * 排序
@@ -64,7 +55,6 @@ public class CategoryEntity implements Serializable {
      * 子分类菜单集合
      */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @TableField(exist = false)
-    private List<CategoryEntity> children;
+    private List<CategoryVo> children;
 
 }

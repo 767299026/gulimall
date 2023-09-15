@@ -4,6 +4,7 @@ import com.lsl.common.utils.PageUtils;
 import com.lsl.common.utils.R;
 import com.lsl.gulimall.product.entity.AttrEntity;
 import com.lsl.gulimall.product.service.AttrService;
+import com.lsl.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +26,21 @@ public class AttrController {
     private AttrService attrService;
 
     /**
+     * 分页获取商品分类列表
+     * @param params
+     * @param catelogId
+     * @return
+     */
+    @GetMapping("/base/list/{catelogId}")
+    public R baseAttrList(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId) {
+        PageUtils page = attrService.queryBaseAttrPage(params,catelogId);
+        return R.ok();
+    }
+
+    /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     //@RequiresPermissions("product:attr:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = attrService.queryPage(params);
@@ -39,7 +52,7 @@ public class AttrController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{attrId}")
+    @GetMapping("/info/{attrId}")
     //@RequiresPermissions("product:attr:info")
     public R info(@PathVariable("attrId") Long attrId) {
         AttrEntity attr = attrService.getById(attrId);
@@ -50,10 +63,10 @@ public class AttrController {
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     //@RequiresPermissions("product:attr:save")
-    public R save(@RequestBody AttrEntity attr) {
-        attrService.save(attr);
+    public R save(@RequestBody AttrVo attr) {
+        attrService.saveAttr(attr);
 
         return R.ok();
     }
@@ -61,7 +74,7 @@ public class AttrController {
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PutMapping("/update")
     //@RequiresPermissions("product:attr:update")
     public R update(@RequestBody AttrEntity attr) {
         attrService.updateById(attr);
@@ -72,7 +85,7 @@ public class AttrController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @DeleteMapping("/delete")
     //@RequiresPermissions("product:attr:delete")
     public R delete(@RequestBody Long[] attrIds) {
         attrService.removeByIds(Arrays.asList(attrIds));

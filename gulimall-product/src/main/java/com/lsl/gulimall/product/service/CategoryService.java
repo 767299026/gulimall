@@ -16,10 +16,37 @@ import java.util.Map;
  */
 public interface CategoryService extends IService<CategoryEntity> {
 
+    /**
+     * 普通分页查询
+     * @param params
+     * @return
+     */
     PageUtils queryPage(Map<String, Object> params);
 
+    /**
+     * 树形查询
+     * @return
+     */
     List<CategoryEntity> listWithTree();
 
+    /**
+     * 删除菜单
+     * @param list
+     */
     void removeMenuByIds(List<Long> list);
+
+    /**
+     * 找到catelogId的完整路径
+     * [父/子/孙]
+     * @param catelogId
+     * @return
+     */
+    Long[] findCatelogPath(Long catelogId);
+
+    /**
+     * 级联更新所有分类
+     * @param category
+     */
+    void updateCascade(CategoryEntity category);
 }
 

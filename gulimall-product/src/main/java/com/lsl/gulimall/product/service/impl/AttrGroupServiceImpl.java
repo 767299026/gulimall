@@ -30,18 +30,24 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
     @Override
     public PageUtils queryPage(Long catelogId, Map<String, Object> params) {
+        String key = (String) params.get("key");
+        LambdaQueryWrapper<AttrGroupEntity> wrapper = new LambdaQueryWrapper<>();
+        // 判断是否携带查询参数
+        if(!StringUtils.isEmpty(key)) {
+            wrapper.and((obj) -> {
+                obj.eq(AttrGroupEntity::getAttrGroupId, key).or().like(AttrGroupEntity::getAttrGroupName,key);
+            });
+        }
+        //三级分类Id是否为0
         if(catelogId == 0) {
             IPage<AttrGroupEntity> page = this.page(new Query<AttrGroupEntity>().getPage(params), new QueryWrapper<>());
             return new PageUtils(page);
         } else {
-            LambdaQueryWrapper<AttrGroupEntity> wrapper = new LambdaQueryWrapper<AttrGroupEntity>().eq(AttrGroupEntity::getCatelogId,catelogId);
-            // 判断是否携带查询参数
-            if(StringUtils.isEmpty(params.get("key"))) {
-
-
-            }
-            //1.查出所有当前分类下的数据
+            wrapper.eq(AttrGroupEntity::getCatelogId,catelogId);
+            IPage<AttrGroupEntity> page = this.page(new Query<AttrGroupEntity>().getPage(params), wrapper);
+            return new PageUtils(page);
         }
-        return null;
     }
+
+
 }
