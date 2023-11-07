@@ -2,13 +2,16 @@ package com.lsl.gulimall.product.controller;
 
 import com.lsl.common.utils.PageUtils;
 import com.lsl.common.utils.R;
+import com.lsl.gulimall.product.entity.AttrEntity;
 import com.lsl.gulimall.product.entity.AttrGroupEntity;
 import com.lsl.gulimall.product.service.AttrGroupService;
+import com.lsl.gulimall.product.service.AttrService;
 import com.lsl.gulimall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -28,6 +31,15 @@ public class AttrGroupController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AttrService attrService;
+
+    @GetMapping("/{attrgroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrgroupId") Long attrgroupId){
+        List<AttrEntity> entities = attrService.getRelationAttr(attrgroupId);
+        return R.ok();
+    }
 
     /**
      * 列表

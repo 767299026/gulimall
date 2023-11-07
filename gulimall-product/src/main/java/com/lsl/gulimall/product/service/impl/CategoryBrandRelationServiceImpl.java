@@ -59,7 +59,6 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     public void updateBrand(Long brandId, String name) {
         //1.创建对象,包含需要更新的字段(即有值)
         CategoryBrandRelationEntity entity = new CategoryBrandRelationEntity();
-        entity.setBrandId(brandId);
         entity.setBrandName(name);
         //2.更新所有Id = 指定id的行值
         this.update(entity, new LambdaUpdateWrapper<CategoryBrandRelationEntity>().eq(CategoryBrandRelationEntity::getBrandId,brandId));
@@ -75,7 +74,6 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     public void updateCategory(Long catId, String name) {
         //1.创建对象,包含需要更新的字段(即有值)
         CategoryBrandRelationEntity entity = new CategoryBrandRelationEntity();
-        entity.setCatelogId(catId);
         entity.setCatelogName(name);
         //2.更新所有Id = 指定id的行值
         this.update(entity, new LambdaUpdateWrapper<CategoryBrandRelationEntity>().eq(CategoryBrandRelationEntity::getCatelogId,catId));

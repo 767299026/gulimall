@@ -34,9 +34,7 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         LambdaQueryWrapper<AttrGroupEntity> wrapper = new LambdaQueryWrapper<>();
         // 判断是否携带查询参数
         if(!StringUtils.isEmpty(key)) {
-            wrapper.and((obj) -> {
-                obj.eq(AttrGroupEntity::getAttrGroupId, key).or().like(AttrGroupEntity::getAttrGroupName,key);
-            });
+            wrapper.and((obj) -> obj.eq(AttrGroupEntity::getAttrGroupId, key).or().like(AttrGroupEntity::getAttrGroupName,key));
         }
         //三级分类Id是否为0
         if(catelogId == 0) {

@@ -8,10 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>gulimail_product</artifactId>
+    <artifactId>gulimall-product</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gulimall_product</name>
-    <description>gulimall_product</description>
+    <name>gulimall-product</name>
+    <description>gulimall-product</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
