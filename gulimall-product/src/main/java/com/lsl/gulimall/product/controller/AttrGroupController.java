@@ -2,6 +2,7 @@ package com.lsl.gulimall.product.controller;
 
 import com.lsl.common.utils.PageUtils;
 import com.lsl.common.utils.R;
+import com.lsl.gulimall.product.dto.AttrGroupRelationDeleteDTO;
 import com.lsl.gulimall.product.entity.AttrEntity;
 import com.lsl.gulimall.product.entity.AttrGroupEntity;
 import com.lsl.gulimall.product.service.AttrGroupService;
@@ -35,10 +36,22 @@ public class AttrGroupController {
     @Autowired
     private AttrService attrService;
 
-    @GetMapping("/{attrgroupId}/attr/relation")
-    public R attrRelation(@PathVariable("attrgroupId") Long attrgroupId){
-        List<AttrEntity> entities = attrService.getRelationAttr(attrgroupId);
+    @PostMapping("/attr/relation/delete")
+    public R deleteRelation(@RequestBody AttrGroupRelationDeleteDTO[] dtos) {
+        attrService.deleteRelation(dtos);
         return R.ok();
+    }
+
+    @GetMapping("/{attrgroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrgroupId") Long attrgroupId) {
+        List<AttrEntity> entities = attrService.getRelationAttr(attrgroupId);
+        return R.ok().put("data", entities);
+    }
+
+    @GetMapping("/{attrgroupId}/noattr/relation")
+    public R attrNoRelation(@PathVariable("attrgroupId") Long attrgroupId, @RequestParam Map<String, Object> params) {
+        PageUtils page = attrService.getNoRelationAttr(params, attrgroupId);
+        return R.ok().put("data", page);
     }
 
     /**
@@ -47,7 +60,7 @@ public class AttrGroupController {
     @GetMapping("/list/{catelogId}")
     //@RequiresPermissions("product:attrgroup:list")
     public R list(@PathVariable("catelogId") Long catelogId, @RequestParam Map<String, Object> params) {
-        PageUtils page = attrGroupService.queryPage(catelogId,params);
+        PageUtils page = attrGroupService.queryPage(catelogId, params);
         return R.ok().put("page", page);
     }
 

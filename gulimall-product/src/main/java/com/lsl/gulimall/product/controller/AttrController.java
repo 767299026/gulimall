@@ -2,7 +2,6 @@ package com.lsl.gulimall.product.controller;
 
 import com.lsl.common.utils.PageUtils;
 import com.lsl.common.utils.R;
-import com.lsl.gulimall.product.entity.AttrEntity;
 import com.lsl.gulimall.product.service.AttrService;
 import com.lsl.gulimall.product.vo.AttrRespVO;
 import com.lsl.gulimall.product.vo.AttrVo;

@@ -2,6 +2,7 @@ package com.lsl.gulimall.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lsl.common.utils.PageUtils;
+import com.lsl.gulimall.product.dto.AttrGroupRelationDeleteDTO;
 import com.lsl.gulimall.product.entity.AttrEntity;
 import com.lsl.gulimall.product.vo.AttrRespVO;
 import com.lsl.gulimall.product.vo.AttrVo;
@@ -45,6 +46,23 @@ public interface AttrService extends IService<AttrEntity> {
 
     void updateAttr(AttrVo attr);
 
+    /**
+     * 根据分组id查找关联的所有属性
+     *
+     * @param attrgroupId
+     * @return
+     */
     List<AttrEntity> getRelationAttr(Long attrgroupId);
+
+    void deleteRelation(AttrGroupRelationDeleteDTO[] dtos);
+
+    /**
+     * 获取当前分组没有关联的所有属性
+     *
+     * @param params
+     * @param attrgroupId
+     * @return
+     */
+    PageUtils getNoRelationAttr(Map<String, Object> params, Long attrgroupId);
 }
 
