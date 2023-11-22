@@ -12,7 +12,7 @@ import com.lsl.gulimall.product.dao.AttrAttrgroupRelationDao;
 import com.lsl.gulimall.product.dao.AttrDao;
 import com.lsl.gulimall.product.dao.AttrGroupDao;
 import com.lsl.gulimall.product.dao.CategoryDao;
-import com.lsl.gulimall.product.dto.AttrGroupRelationDeleteDTO;
+import com.lsl.gulimall.product.dto.AttrGroupRelationDTO;
 import com.lsl.gulimall.product.entity.AttrAttrgroupRelationEntity;
 import com.lsl.gulimall.product.entity.AttrEntity;
 import com.lsl.gulimall.product.entity.AttrGroupEntity;
@@ -61,7 +61,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         //1.保存基本数据
         this.save(attrEntity);
         //2.保存关联关系
-        if(attr.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode()){
+        if (attr.getAttrType() == ProductConstant.AttrEnum.ATTR_TYPE_BASE.getCode() && attr.getAttrGroupId() != null) {
             AttrAttrgroupRelationEntity attrAttrgroupRelationEntity = new AttrAttrgroupRelationEntity();
             attrAttrgroupRelationEntity.setAttrGroupId(attr.getAttrGroupId());
             attrAttrgroupRelationEntity.setAttrId(attrEntity.getAttrId());
@@ -161,7 +161,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
     }
 
     @Override
-    public void deleteRelation(AttrGroupRelationDeleteDTO[] dtos) {
+    public void deleteRelation(AttrGroupRelationDTO[] dtos) {
         List<AttrAttrgroupRelationEntity> entities = Arrays.asList(dtos).stream().map(item -> {
             AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
             BeanUtils.copyProperties(item, relationEntity);
@@ -224,7 +224,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
             queryWrapper.eq(AttrAttrgroupRelationEntity::getAttrId, attrEntity.getAttrId());
             if("base".equalsIgnoreCase(attrType)){
                 AttrAttrgroupRelationEntity attrId = attrAttrgroupRelationDao.selectOne(queryWrapper);
-                if (Objects.nonNull(attrId)) {
+                if (Objects.nonNull(attrId) && attrId.getAttrGroupId() != null) {
                     AttrGroupEntity attrGroupEntity = attrGroupDao.selectById(attrId.getAttrGroupId());
                     respVO.setGroupName(attrGroupEntity.getAttrGroupName());
                 }

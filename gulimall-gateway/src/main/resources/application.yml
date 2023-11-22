@@ -2,6 +2,10 @@ ipAddr: 127.0.0.1
 server:
   port: 6000
 spring:
+
+  main:
+    web-application-type: reactive
+
   application:
     name: gulimall-gateway
 
@@ -17,15 +21,21 @@ spring:
         - id: product_route
           uri: lb://gulimall-product
           predicates:
-            - Path: /api/product/**
+            - Path=/api/product/**
           filters:
-            - RewritePath:/api/(?<segment>.*),/$\{segment}
+            - StripPrefix=1
+        - id: member_route
+          uri: lb://gulimall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - StripPrefix=1
         - id: file_upload_route
           uri: lb://gulimall-file
           predicates:
-            - Path: /api/thirdparty/**
+            - Path=/api/thirdparty/**
           filters:
-            - RewritePath:/api/thirdparty/(?<segment>.*),/$\{segment}
+            - RewritePath=/api/thirdparty/(?<segment>.*),/$\{segment}
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml

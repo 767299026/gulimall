@@ -3,7 +3,7 @@ package com.lsl.gulimall.product.dto;
 import lombok.Data;
 
 @Data
-public class AttrGroupRelationDeleteDTO {
+public class AttrGroupRelationDTO {
 
     private Long attrId;
 

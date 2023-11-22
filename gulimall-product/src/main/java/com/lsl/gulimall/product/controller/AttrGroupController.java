@@ -2,9 +2,10 @@ package com.lsl.gulimall.product.controller;
 
 import com.lsl.common.utils.PageUtils;
 import com.lsl.common.utils.R;
-import com.lsl.gulimall.product.dto.AttrGroupRelationDeleteDTO;
+import com.lsl.gulimall.product.dto.AttrGroupRelationDTO;
 import com.lsl.gulimall.product.entity.AttrEntity;
 import com.lsl.gulimall.product.entity.AttrGroupEntity;
+import com.lsl.gulimall.product.service.AttrAttrgroupRelationService;
 import com.lsl.gulimall.product.service.AttrGroupService;
 import com.lsl.gulimall.product.service.AttrService;
 import com.lsl.gulimall.product.service.CategoryService;
@@ -36,8 +37,11 @@ public class AttrGroupController {
     @Autowired
     private AttrService attrService;
 
+    @Autowired
+    private AttrAttrgroupRelationService relationService;
+
     @PostMapping("/attr/relation/delete")
-    public R deleteRelation(@RequestBody AttrGroupRelationDeleteDTO[] dtos) {
+    public R deleteRelation(@RequestBody AttrGroupRelationDTO[] dtos) {
         attrService.deleteRelation(dtos);
         return R.ok();
     }
@@ -62,6 +66,13 @@ public class AttrGroupController {
     public R list(@PathVariable("catelogId") Long catelogId, @RequestParam Map<String, Object> params) {
         PageUtils page = attrGroupService.queryPage(catelogId, params);
         return R.ok().put("page", page);
+    }
+
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrGroupRelationDTO> dtos) {
+        relationService.saveBatch(dtos);
+        return R.ok();
+
     }
 
 
