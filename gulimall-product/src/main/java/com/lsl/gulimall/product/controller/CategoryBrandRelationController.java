@@ -3,14 +3,17 @@ package com.lsl.gulimall.product.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.lsl.common.utils.PageUtils;
 import com.lsl.common.utils.R;
+import com.lsl.gulimall.product.entity.BrandEntity;
 import com.lsl.gulimall.product.entity.CategoryBrandRelationEntity;
 import com.lsl.gulimall.product.service.CategoryBrandRelationService;
+import com.lsl.gulimall.product.vo.BrandVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -26,15 +29,27 @@ public class CategoryBrandRelationController {
     @Autowired
     private CategoryBrandRelationService categoryBrandRelationService;
 
+    @GetMapping("/brands/list")
+    public R relationBrandsList(@RequestParam("cateId") Long catId) {
+        List<BrandEntity> entities = categoryBrandRelationService.getBrandsByCatId(catId);
+        List<BrandVO> vos = entities.stream().map(item -> {
+            BrandVO brandVO = new BrandVO();
+            brandVO.setBrandId(item.getBrandId());
+            brandVO.setBrandName(item.getName());
+            return brandVO;
+        }).collect(Collectors.toList());
+        return R.ok().put("data", vos);
+    }
+
     /**
      * 列表
      */
     @GetMapping("/catelog/list")
-    public R cateloglist(@RequestParam("brandId") Long brandId){
+    public R cateloglist(@RequestParam("brandId") Long brandId) {
         List<CategoryBrandRelationEntity> data = categoryBrandRelationService.list(
-                new LambdaQueryWrapper<CategoryBrandRelationEntity>().eq(CategoryBrandRelationEntity::getBrandId,brandId)
+                new LambdaQueryWrapper<CategoryBrandRelationEntity>().eq(CategoryBrandRelationEntity::getBrandId, brandId)
         );
-        return R.ok().put("data",data);
+        return R.ok().put("data", data);
     }
 
     /**

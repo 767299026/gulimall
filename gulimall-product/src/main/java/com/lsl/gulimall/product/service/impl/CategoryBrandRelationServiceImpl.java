@@ -1,5 +1,6 @@
 package com.lsl.gulimall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,12 +13,15 @@ import com.lsl.gulimall.product.dao.CategoryDao;
 import com.lsl.gulimall.product.entity.BrandEntity;
 import com.lsl.gulimall.product.entity.CategoryBrandRelationEntity;
 import com.lsl.gulimall.product.entity.CategoryEntity;
+import com.lsl.gulimall.product.service.BrandService;
 import com.lsl.gulimall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service("categoryBrandRelationService")
@@ -29,8 +33,15 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     @Autowired
     private CategoryDao categoryDao;
 
+    @Autowired
+    private CategoryBrandRelationDao categoryBrandRelationDao;
+
+    @Autowired
+    private BrandService brandService;
+
     /**
      * 保存关联信息
+     *
      * @param categoryBrandRelation
      */
     @Transactional
@@ -61,11 +72,25 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
         CategoryBrandRelationEntity entity = new CategoryBrandRelationEntity();
         entity.setBrandName(name);
         //2.更新所有Id = 指定id的行值
-        this.update(entity, new LambdaUpdateWrapper<CategoryBrandRelationEntity>().eq(CategoryBrandRelationEntity::getBrandId,brandId));
+        this.update(entity, new LambdaUpdateWrapper<CategoryBrandRelationEntity>().eq(CategoryBrandRelationEntity::getBrandId, brandId));
+    }
+
+    @Override
+    public List<BrandEntity> getBrandsByCatId(Long catId) {
+        LambdaQueryWrapper<CategoryBrandRelationEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(CategoryBrandRelationEntity::getCatelogId, catId);
+        List<CategoryBrandRelationEntity> catelogId = categoryBrandRelationDao.selectList(queryWrapper);
+        List<BrandEntity> entities = catelogId.stream().map(item -> {
+            Long brandId = item.getBrandId();
+            BrandEntity byId = brandService.getById(brandId);
+            return byId;
+        }).collect(Collectors.toList());
+        return entities;
     }
 
     /**
      * 关联更新分类信息
+     *
      * @param catId
      * @param name
      */
